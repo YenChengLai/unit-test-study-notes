@@ -49,6 +49,22 @@
 3. Then：驗證行為執行後狀態 \( post-condition \)
    * 對應結果是否同設定的目標
 
+### 舉例說明
+
+我們使用_**使用者登入**_的情境來作為說明：
+
+**AAA**
+
+* UserDAO 裡設定狀態為已登入 ****\( Arrange \)
+* UserService 使用 UserDAO 執行下單 \( Act \)
+* 下單是否成功 \( Assert \)
+
+**Given, When, Then**
+
+* User 已登入 \( Given \)
+* User 登出系統 \( When \)
+* User 無法下單 \( Then \)
+
 仔細比對以上兩種框架，不難發現兩者其實都是在講同一件事，只是針對的面向不同，一個是針對測試本身，一個是針對操作行為。
 
 其實，這就是時常談論到的 _**TDD**_ \( Test-Driven Design / Development 測試驅動設計 / 開發 \) 和 _**BDD**_ \( Behavior-Driven Design / Development 行為驅動設計 / 開發 \)。
