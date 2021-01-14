@@ -76,6 +76,20 @@ maven 專案建立完成
 </project>
 ```
 
+簡單說明`pom.xml`中的一些 tag 的意義：
+
+* dependencies：maven 中每一個 dependency 代表一個 jar 檔，所有的 dependency 都統一管理在 dependencies 之下
+* scope：maven 一共有六種 scope，分別是：
+
+  * compile
+  * provided
+  * runtime
+  * test
+  * system
+  * import
+
+  這些不同的scope分別代表不同的作用域和依賴傳遞限制，此處不特別說明細部差異。使用 test 代表我們這個 jar 檔只會參與測試階段，實際打包專案資源時並不會被納入其中
+
 ### JUnit 應注意：
 
 1. Unit test class 命名應對照待側 class，e.g.  login =&gt; loginTest
