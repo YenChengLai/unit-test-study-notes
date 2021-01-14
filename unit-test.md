@@ -67,5 +67,5 @@
 
 仔細比對以上兩種框架，不難發現兩者其實都是在講同一件事，只是針對的面向不同，一個是針對測試本身，一個是針對操作行為。
 
-其實，這就是時常談論到的 _**TDD**_ \( Test-Driven Design / Development 測試驅動設計 / 開發 \) 和 _**BDD**_ \( Behavior-Driven Design / Development 行為驅動設計 / 開發 \)。
+其實，這就是時常談論到的 _**TDD**_ \( Test-Driven Design / Development 測試驅動設計 / 開發 \) 和 _**BDD**_ \( Behavior-Driven Design / Development 行為驅動設計 / 開發 \) 之間看待事情的切入點；說到底，當行為限縮在最小單位的單元測試時，不論是 TDD 還是 BDD ，都是執行一樣的行為的。
 
