@@ -38,7 +38,43 @@ maven 專案建立完成
 
 #### 設定 pom.xml
 
+建立完`maven`專案後，我們的下一步就是要透過`maven`的機制引入 JUnit 需要的 jar 檔，為此我們要更改`pom.xml`檔案，`maven`會解析`pom.xml`中定義的 dependency，去對應的遠端 repository 抓取需要的 jar 檔。
 
+這是一開始的`pom.xml`：
+
+```markup
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.java.unitTest</groupId>
+  <artifactId>JUnit</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+</project>
+```
+
+要引入 JUnit 5，我們需要知道他在 maven repository 上的 dependency 設定，所以我們可以到maven repository的網站 \( [https://mvnrepository.com/](https://mvnrepository.com/) \) 上查詢 JUnit，選擇 junit-jupiter-api 也就是 JUnit 5，再選擇想要的版本，這裡以 5.7.0 版本作為範例。
+
+我們按照官網上提供的`maven`設定修改我們的`pom.xml`
+
+```markup
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.java.unitTest</groupId>
+	<artifactId>JUnit</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.7.0</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
+```
 
 ### JUnit 應注意：
 
