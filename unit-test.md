@@ -69,3 +69,9 @@
 
 其實，這就是時常談論到的 _**TDD**_ \( Test-Driven Design / Development 測試驅動設計 / 開發 \) 和 _**BDD**_ \( Behavior-Driven Design / Development 行為驅動設計 / 開發 \) 之間看待事情的切入點；說到底，當行為限縮在最小單位的單元測試時，不論是 TDD 還是 BDD ，都是執行一樣的行為的。
 
+## 單元測試的原則
+
+### 孤立性
+
+單元測試原則上應該要被孤立，不應該相依到任何的外部環境，所以類似呼叫作業系統環境、call HttpRequest \( call RESTful API \) 都是不允許的。孤立的測試環境才能夠保證正確的觀測目標的行為表現。
+
