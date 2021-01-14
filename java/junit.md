@@ -30,7 +30,11 @@ JUnit 是 Java 運行單元測試的工具之一，但也是最普及、最常�
 
 輸入Group Id、Artifact Id \( Group Id 通常是 domain，而 Artifact Id 通常是專案名稱 \)
 
-![](../.gitbook/assets/jie-tu-20210114-xia-wu-2.13.05.png)
+![](../.gitbook/assets/jie-tu-20210114-xia-wu-3.08.47.png)
+
+maven 專案建立完成
+
+![](../.gitbook/assets/jie-tu-20210114-xia-wu-3.09.03.png)
 
 #### 設定 pom.xml
 
