@@ -5,6 +5,7 @@
 
 ## Java
 
-* [JUnit](java/junit.md)
+* [JUnit 簡介與環境設定](java/junit-intro-and-env.md)
+* [JUnit 撰寫測試](java/junit-write-a-test.md)
 * [Mockito 簡介與操作](java/mockito.md)
 
