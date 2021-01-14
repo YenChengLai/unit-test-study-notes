@@ -1,4 +1,4 @@
-# JUnit 簡介與操作
+# JUnit 簡介與環境設定
 
 ### 簡介
 
@@ -89,10 +89,4 @@ maven 專案建立完成
   * import
 
   這些不同的scope分別代表不同的作用域和依賴傳遞限制，此處不特別說明細部差異。使用 test 代表我們這個 jar 檔只會參與測試階段，實際打包專案資源時並不會被納入其中
-
-### JUnit 應注意：
-
-1. Unit test class 命名應對照待側 class，e.g.  login =&gt; loginTest
-2. test class 應是 public class，不要是abstract或final \(不要做任何奇怪的舉動\)
-3. package src/test/java =&gt; test  ,   production =&gt; src/test/main
 
