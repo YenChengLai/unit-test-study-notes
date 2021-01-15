@@ -153,8 +153,12 @@ public class CalculatorTest {
 
 ![](../.gitbook/assets/jie-tu-20210115-xia-wu-3.15.33.png)
 
+
+
 ### 注意事項
 
 * test class 的命名最好對應要測試的 class，e.g. Calculator =&gt; CalculatorTest
 * test class 應為 public class，並且方法上不要用 abstract 或 final
+
+
 
