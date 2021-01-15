@@ -124,6 +124,35 @@ public class CalculatorTest {
 
 ## **撰寫 JUnit**
 
+### 基本 JUnit 程式配置
+
+我們繼續以 CalculatorTest 為藍本執行 JUnit，首先要透過 Annotation 的方式進行兩個配置：
+
+1. 在 class 上加上 @RunWith\(JUnitPlatform.class\)
+2. 在要測試的方法上加上 @Test
+
+```java
+package com.java.unitTest;
+
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+
+@RunWith(JUnitPlatform.class)
+public class CalculatorTest {
+
+	@Test
+	public void testAdd() {
+
+	}
+
+}
+```
+
+修改完後，對該程式按右鍵 -&gt; Run As -&gt; JUnit Test，就可以在 Eclipse 中執行並看到結果。
+
+![](../.gitbook/assets/jie-tu-20210115-xia-wu-3.15.33.png)
+
 ### 注意事項
 
 * test class 的命名最好對應要測試的 class，e.g. Calculator =&gt; CalculatorTest
