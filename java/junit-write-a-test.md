@@ -311,7 +311,115 @@ public class LifeCycleTest {
 
 ![](../.gitbook/assets/jie-tu-20210118-xia-wu-3.10.52.png)
 
+### 進階
 
+在了解 JUnit 5 的生命週期之後，我們來利用這個概念優化我們的程式碼，首先我們先假設 Calculator 有兩種情境要測試，所以我們又額外寫了一個測試方法：
+
+```java
+package com.java.unitTest;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+
+@RunWith(JUnitPlatform.class)
+public class CalculatorTest {
+
+	@Test
+	public void testAdd() {
+		// arrange
+		Calculator calc = new Calculator();
+		int a = 1;
+		int b = 2;
+
+		// act
+		int result = calc.add(a, b);
+
+		// assert
+		assertEquals(3, result);
+	}
+
+	@Test
+	public void testAddZero() {
+		// arrange
+		Calculator calc = new Calculator();
+
+		int one = 1;
+		int zero = 0;
+
+		// act
+		int result = calc.add(one, zero);
+		
+		// assert
+		assertEquals(1, result);
+	}
+
+}
+```
+
+上面的程式碼算是中規中矩，但如果仔細看就會發現 Calculator 的物件在每個測試方法中，都會需要被重新建立一次，這對於效能來說並非最佳化的選擇，藉由剛剛提到的生命週期，我們可以這麼改寫：
+
+```java
+package com.java.unitTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+
+@RunWith(JUnitPlatform.class)
+public class CalculatorTest {
+	
+	private Calculator calc;
+	
+	@BeforeEach
+	public void setUp() {
+		calc = new Calculator();
+	}
+
+	@AfterEach
+	public void tear() {
+		calc = null;
+	}
+
+	@Test
+	public void testAdd() {
+		// arrange
+		int a = 1;
+		int b = 2;
+
+		// act
+		int result = calc.add(a, b);
+
+		// assert
+		assertEquals(3, result);
+	}
+
+	@Test
+	public void testAddZero() {
+		// arrange
+		int one = 1;
+		int zero = 0;
+
+		// act
+		int result = calc.add(one, zero);
+		
+		// assert
+		assertEquals(1, result);
+	}
+
+}
+```
+
+透過 @BeforeEach 的方法，每一次的 @Test 方法觸發前，我們才對 Calculator 物件實例化，藉此避免重複建立物件，透過 @AfterEach 將 Calculator 物件指為空值使 JVM 得以回收記憶體。
 
 ### 注意事項
 
