@@ -153,7 +153,7 @@ public class CalculatorTest {
 
 ![](../.gitbook/assets/jie-tu-20210115-xia-wu-3.15.33.png)
 
-### 功能測試
+### 撰寫測試
 
 能夠正常進行 JUnit 測試後，我們下一步要進行的就是調用 Calculator 的 add 方法，並真正進行測試：
 
@@ -365,9 +365,7 @@ public class CalculatorTest {
 ```java
 package com.java.unitTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
