@@ -153,7 +153,53 @@ public class CalculatorTest {
 
 ![](../.gitbook/assets/jie-tu-20210115-xia-wu-3.15.33.png)
 
+### 功能測試
 
+能夠正常進行 JUnit 測試後，我們下一步要進行的就是調用 Calculator 的 add 方法，並真正進行測試：
+
+```java
+package com.java.unitTest;
+
+import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+
+@RunWith(JUnitPlatform.class)
+public class CalculatorTest {
+
+	@Test
+	public void testAdd() {
+	
+		// arrange
+		Calculator calc = new Calculator();
+		int a = 1;
+		int b = 2;
+
+		// act
+		int result = calc.add(a, b);
+
+		// assert
+		Assert.assertEquals(3, result);
+	}
+}
+```
+
+在撰寫上一樣遵守 3A 原則：
+
+1. 建立物件、測試方法所需要的參數
+2. 執行測試方法
+3. 比對結果是否如預期
+
+撰寫完測試程式，我們可以用上面提過的方法執行 JUnit，並在 IDE 中看到執行的結果，假設一切正常，結果畫面會如下：
+
+![](../.gitbook/assets/jie-tu-20210118-shang-wu-11.38.30.png)
+
+如果是失敗的話，畫面則會如下 \( 我們把 assertEquals 預期的輸出改成 4 \) ：
+
+![](../.gitbook/assets/jie-tu-20210118-shang-wu-11.46.23.png)
+
+上圖可以很明顯地看到，IDE 中會提供錯誤的執行軌跡，此處的錯誤是預期輸出和實際輸出不同。
 
 ### 注意事項
 
