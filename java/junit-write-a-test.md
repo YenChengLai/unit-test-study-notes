@@ -201,7 +201,7 @@ public class CalculatorTest {
 
 上圖可以很明顯地看到，IDE 中會提供錯誤的執行軌跡，此處的錯誤是預期輸出和實際輸出不同。
 
-### 進階寫法
+### 常用寫法
 
 上面的範例是一個最簡單標準的單元測試的寫法，接下來我們會使用一些 JUnit 的語法特色，撰寫一些比較複雜，或者比較有特色的寫法：
 
@@ -229,7 +229,89 @@ Assertions：JUnit 5 對於驗證的 API，等同於 JUnit 4 的 Assert。
   * 前者為會拋出的例外類別，後者為一匿名方法，方法應拋出該例外，否則測試不通過
 * fail：傳入例外或錯誤訊息，並直接使測試強制失敗
 
-為了讓程式碼變得更整潔
+使用上述的API時，每次都要寫一次 Assertions 其實非常麻煩，如果點開他的 API 查看，不難發現每個方法都是靜態方法，所以我們可以這麼簡化：
+
+```java
+import static org.junit.jupiter.api.Assertions.*;
+```
+
+如此引入之後，我們再改寫剛剛的範例：
+
+```java
+	@Test
+	public void testExpectedExceptionThrow() {
+		assertThrows(NumberFormatException.class, () -> {
+			Integer.parseInt("Hi");
+			fail("轉型失敗未觸發");
+		});
+	}
+```
+
+之後使用 Assertions 都可以直接呼叫方法名了。
+
+### 生命週期
+
+JUnit 的生命週其一共可分為 4 個部分：
+
+* BeforeAll：只能加於靜態方法，整個測試開始前執行
+* BeforeEach：每一個測試方法開始前執行
+* AfterEach：每一個測試方法結束後執行
+* AfterAll：只能加於靜態方法，整個測試結束後執行
+
+以下範例：
+
+```java
+package com.java.unitTest;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+
+@RunWith(JUnitPlatform.class)
+public class LifeCycleTest {
+
+	@BeforeAll
+	public static void first() {
+		System.out.println("------Before All------");
+	}
+
+	@BeforeEach
+	public void beforeMethod() {
+		System.out.println("------Before Each------");
+	}
+
+	@Test
+	public void test1() {
+		System.out.println("This is test1");
+	}
+
+	@Test
+	public void test2() {
+		System.out.println("This is test2");
+	}
+
+	@AfterEach
+	public void afterMethod() {
+		System.out.println("------After Each------");
+	}
+
+	@AfterAll
+	public static void last() {
+		System.out.println("------After All------");
+	}
+
+}
+```
+
+結果：
+
+![](../.gitbook/assets/jie-tu-20210118-xia-wu-3.10.52.png)
+
+
 
 ### 注意事項
 
