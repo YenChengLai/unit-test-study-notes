@@ -160,7 +160,7 @@ public class CalculatorTest {
 ```java
 package com.java.unitTest;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
@@ -180,7 +180,7 @@ public class CalculatorTest {
 		int result = calc.add(a, b);
 
 		// assert
-		Assert.assertEquals(3, result);
+		Assertions.assertEquals(3, result);
 	}
 }
 ```
@@ -200,6 +200,34 @@ public class CalculatorTest {
 ![](../.gitbook/assets/jie-tu-20210118-shang-wu-11.46.23.png)
 
 上圖可以很明顯地看到，IDE 中會提供錯誤的執行軌跡，此處的錯誤是預期輸出和實際輸出不同。
+
+### 進階寫法
+
+上面的範例是一個最簡單標準的單元測試的寫法，接下來我們會使用一些 JUnit 的語法特色，撰寫一些比較複雜，或者比較有特色的寫法：
+
+Assertions：JUnit 5 對於驗證的 API，等同於 JUnit 4 的 Assert。
+
+完整API：[https://junit.org/junit5/docs/5.0.1/api/org/junit/jupiter/api/Assertions.html](https://junit.org/junit5/docs/5.0.1/api/org/junit/jupiter/api/Assertions.html)
+
+以下撰寫一個反面案例：
+
+```java
+	@Test
+	public void testExpectedExceptionThrow() {
+		Assertions.assertThrows(NumberFormatException.class, () -> {
+			Integer.parseInt("Hi");
+			Assertions.fail("轉型失敗未觸發");
+		});
+	}
+```
+
+包含上面的範例程式碼，我們一共用了以下幾個 API：
+
+* assertEquals：傳入兩個參數比對是否相同，若相同則測試通過
+  * 前者為預期結果，後者為執行結果
+* assertThrows：傳入兩參數比對是否有觸發指定例外
+  * 前者為
+* fail：
 
 ### 注意事項
 
