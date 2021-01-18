@@ -42,7 +42,7 @@ public class CalculatorTest {
 
 假設我們的目的是要測試 Calculartor 中的 add 方法，那我們就會在 CalculatorTest 之中撰寫 testAdd 方法，這是我們在撰寫單元測試上的命名慣例。
 
-> 在 JUnit 4 版本前，由於是採用名稱對應的方式映射測試方法，所以每一個方法的名稱都要以 test 開頭，但 JUnit 4 版本後我們可以另外去註冊測試方式，這部分之後的篇幅會在提及。
+> 在 JUnit 4 版本前，由於是採用名稱對應的方式映射測試方法，所以每一個方法的名稱都要以 test 開頭，但 JUnit 4 版本後我們可以另外去註冊測試方式，這部分之後的篇幅會再提及。
 
 設定到這一步，有基礎 Java 概念的各位都知道，不論是 Calculator 或 CalculatorTest 兩個類別都無法執行，Calculator 是專案中的實際程式，有可能只是作為模組本來就不該獨立執行，但測試類別必須能夠執行。
 
@@ -160,7 +160,7 @@ public class CalculatorTest {
 ```java
 package com.java.unitTest;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
@@ -180,7 +180,7 @@ public class CalculatorTest {
 		int result = calc.add(a, b);
 
 		// assert
-		Assert.assertEquals(3, result);
+		Assertions.assertEquals(3, result);
 	}
 }
 ```
@@ -201,10 +201,41 @@ public class CalculatorTest {
 
 上圖可以很明顯地看到，IDE 中會提供錯誤的執行軌跡，此處的錯誤是預期輸出和實際輸出不同。
 
+### 進階寫法
+
+上面的範例是一個最簡單標準的單元測試的寫法，接下來我們會使用一些 JUnit 的語法特色，撰寫一些比較複雜，或者比較有特色的寫法：
+
+Assertions：JUnit 5 對於驗證的 API，等同於 JUnit 4 的 Assert。
+
+完整API：[https://junit.org/junit5/docs/5.0.1/api/org/junit/jupiter/api/Assertions.html](https://junit.org/junit5/docs/5.0.1/api/org/junit/jupiter/api/Assertions.html)
+
+以下撰寫一個反面案例：
+
+```java
+	@Test
+	public void testExpectedExceptionThrow() {
+		Assertions.assertThrows(NumberFormatException.class, () -> {
+			Integer.parseInt("Hi");
+			Assertions.fail("轉型失敗未觸發");
+		});
+	}
+```
+
+包含上面的範例程式碼，我們一共用了以下幾個 API：
+
+* assertEquals：傳入兩個參數比對是否相同，若相同則測試通過
+  * 前者為預期結果，後者為執行結果
+* assertThrows：傳入兩參數比對是否有觸發指定例外
+  * 前者為會拋出的例外類別，後者為一匿名方法，方法應拋出該例外，否則測試不通過
+* fail：傳入例外或錯誤訊息，並直接使測試強制失敗
+
+
+
 ### 注意事項
 
 * test class 的命名最好對應要測試的 class，e.g. Calculator =&gt; CalculatorTest
 * test class 應為 public class，並且方法上不要用 abstract 或 final
+* Assertion 中只要是 true 的結果都會繼續往下執行，但遇到 fail 則中斷程式
 
 
 
