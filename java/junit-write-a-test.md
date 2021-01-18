@@ -185,6 +185,14 @@ public class CalculatorTest {
 }
 ```
 
+在撰寫上一樣遵守 3A 原則：
+
+1. 建立物件、測試方法所需要的參數
+2. 執行測試方法
+3. 比對結果是否如預期
+
+
+
 ### 注意事項
 
 * test class 的命名最好對應要測試的 class，e.g. Calculator =&gt; CalculatorTest
