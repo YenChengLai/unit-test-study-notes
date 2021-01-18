@@ -129,7 +129,7 @@ public class CalculatorTest {
 我們繼續以 CalculatorTest 為藍本執行 JUnit，首先要透過 Annotation 的方式進行兩個配置：
 
 1. 在 class 上加上 @RunWith\(JUnitPlatform.class\)
-2. 在要測試的方法上加上 @Test
+2. 在要測試的方法上加上 @Test \( 這就是前面說的，JUnit 4 以後提供的註冊方式 \)
 
 ```java
 package com.java.unitTest;
