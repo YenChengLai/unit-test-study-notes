@@ -226,13 +226,16 @@ Assertions：JUnit 5 對於驗證的 API，等同於 JUnit 4 的 Assert。
 * assertEquals：傳入兩個參數比對是否相同，若相同則測試通過
   * 前者為預期結果，後者為執行結果
 * assertThrows：傳入兩參數比對是否有觸發指定例外
-  * 前者為
-* fail：
+  * 前者為會拋出的例外類別，後者為一匿名方法，方法應拋出該例外，否則測試不通過
+* fail：傳入例外或錯誤訊息，並直接使測試強制失敗
+
+
 
 ### 注意事項
 
 * test class 的命名最好對應要測試的 class，e.g. Calculator =&gt; CalculatorTest
 * test class 應為 public class，並且方法上不要用 abstract 或 final
+* Assertion 中只要是 true 的結果都會繼續往下執行，但遇到 fail 則中斷程式
 
 
 
