@@ -421,11 +421,18 @@ public class CalculatorTest {
 
 透過 @BeforeEach 的方法，每一次的 @Test 方法觸發前，我們才對 Calculator 物件實例化，藉此避免重複建立物件，透過 @AfterEach 將 Calculator 物件指為空值使 JVM 得以回收記憶體。
 
-### 注意事項
+### 注意事項與其他
 
 * test class 的命名最好對應要測試的 class，e.g. Calculator =&gt; CalculatorTest
 * test class 應為 public class，並且方法上不要用 abstract 或 final
+* 每一個測試方法都要加上 @Test
 * Assertion 中只要是 true 的結果都會繼續往下執行，但遇到 fail 則中斷程式
+* 如果有測試方法不想讓他執行，可以加上 @Disabled
+* 假設結果和預期不同，但不想影響測試結果，可將 Assertions 替代為 Assumptions
 
+## 參考資源
 
+JUnit Tutorial：[https://howtodoinjava.com/junit-5-tutorial/](https://howtodoinjava.com/junit-5-tutorial/)
+
+JUnit 5：[https://junit.org/junit5/](https://junit.org/junit5/)
 
