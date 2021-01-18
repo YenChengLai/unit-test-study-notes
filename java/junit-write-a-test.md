@@ -153,7 +153,37 @@ public class CalculatorTest {
 
 ![](../.gitbook/assets/jie-tu-20210115-xia-wu-3.15.33.png)
 
+### 功能測試
 
+能夠正常進行 JUnit 測試後，我們下一步要進行的就是調用 Calculator 的 add 方法，並真正進行測試：
+
+```java
+package com.java.unitTest;
+
+import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+
+@RunWith(JUnitPlatform.class)
+public class CalculatorTest {
+
+	@Test
+	public void testAdd() {
+	
+		// arrange
+		Calculator calc = new Calculator();
+		int a = 1;
+		int b = 2;
+
+		// act
+		int result = calc.add(a, b);
+
+		// assert
+		Assert.assertEquals(3, result);
+	}
+}
+```
 
 ### 注意事項
 
