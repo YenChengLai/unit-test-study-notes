@@ -191,7 +191,15 @@ public class CalculatorTest {
 2. 執行測試方法
 3. 比對結果是否如預期
 
+撰寫完測試程式，我們可以用上面提過的方法執行 JUnit，並在 IDE 中看到執行的結果，假設一切正常，結果畫面會如下：
 
+![](../.gitbook/assets/jie-tu-20210118-shang-wu-11.38.30.png)
+
+如果是失敗的話，畫面則會如下 \( 我們把 assertEquals 預期的輸出改成 4 \) ：
+
+![](../.gitbook/assets/jie-tu-20210118-shang-wu-11.46.23.png)
+
+上圖可以很明顯地看到，IDE 中會提供錯誤的執行軌跡，此處的錯誤是預期輸出和實際輸出不同。
 
 ### 注意事項
 
