@@ -1,8 +1,8 @@
 # JUnit 簡介與環境設定
 
-### 簡介
+## 簡介
 
-**什麼是 JUnit ?**
+### **什麼是 JUnit ?**
 
 JUnit 是 Java 運行單元測試的工具之一，但也是最普及、最常見的選擇，各大框架在測試工具的選擇上也是預設 JUnit，以 Java developer 來說，JUnit 是剛接觸單元測試最好的起手選擇。
 
@@ -10,11 +10,11 @@ JUnit 是 Java 運行單元測試的工具之一，但也是最普及、最常�
 
 值得一提的是，JUnit 目前最新的版本為 JUnit 5，IDE 方面也要是比較新的版本才會支援，否則只能使用至 JUnit 4 的版本，以`Eclipse`來說，`Eclipse Oxygen`之後的版本才支援 JUnit 5。
 
-### 環境準備
+## 環境準備
 
 要使用 JUnit，我們首先要引入需要的 dependencies，也就是常說的引入 jar 檔，Java 主流用來管理相依套件的工具有`maven`和`gradle`。以下我們會以`maven`搭配`Eclipse 2020-12`為主進行設定和說明。
 
-#### 建立 maven 專案
+### 建立 maven 專案
 
 在`Eclipse`的操作介面選 File -&gt; New -&gt; Project
 
@@ -36,7 +36,7 @@ maven 專案建立完成
 
 ![](../.gitbook/assets/jie-tu-20210114-xia-wu-3.09.03.png)
 
-#### 設定 pom.xml
+### 設定 pom.xml
 
 建立完`maven`專案後，我們的下一步就是要透過`maven`的機制引入 JUnit 需要的 jar 檔，為此我們要更改`pom.xml`檔案，`maven`會解析`pom.xml`中定義的 dependency，去對應的遠端 repository 抓取需要的 jar 檔。
 
