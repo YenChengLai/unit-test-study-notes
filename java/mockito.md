@@ -125,3 +125,21 @@ mock test 的核心就是 mock object，說白了就是創造一個假的物件�
 
 ![](../.gitbook/assets/jie-tu-20210119-xia-wu-3.02.02.png)
 
+### 測試前準備
+
+在撰寫 Mockito test 之前，我們先準備幾隻程式，模擬一個一般系統的登入模組，當然我們並不會真的建一個資料庫去建立連線，以下是架構：
+
+```text
+src/main/java
+  |-- com.java.unitTest.controller
+      |-- LoginController.java
+  |-- com.java.unitTest.dto
+      |-- User.java
+  |-- com.java.unitTest.repository
+      |-- UserRepository.java
+  |-- com.java.unitTest.service
+      |-- AuthenticationService.java
+```
+
+LoginController
+
