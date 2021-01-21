@@ -161,3 +161,119 @@ public class LoginController {
 }
 ```
 
+AuthenticationService.java
+
+```java
+package com.java.unitTest.service;
+
+import com.java.unitTest.dto.User;
+import com.java.unitTest.repository.UserRepository;
+
+public class AuthenticationService {
+
+	private UserRepository userRepo;
+
+	public boolean authenticate(String username, String password) {
+		if (username == null || password == null)
+			return false;
+		User user = userRepo.findByUserName(username);
+		if (user == null)
+			return false;
+		return password.equals(user.getPassword());
+	}
+}
+```
+
+UserRepository.java 
+
+```java
+package com.java.unitTest.repository;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.java.unitTest.dto.User;
+
+public class UserRepository {
+
+	private Map<String, User> users = new HashMap<>();
+
+	public UserRepository() {
+		users.put("john", new User("John", "john123"));
+		users.put("jack", new User("Jack", "jack123"));
+		users.put("peter", new User("Peter", "peter123"));
+	}
+
+	public User findByUserName(String username) {
+		return users.get(username);
+	}
+}
+```
+
+User.java
+
+```java
+package com.java.unitTest.dto;
+
+public class User {
+
+	private String username;
+	private String password;
+
+	public User(String username, String password) {
+		this.username = username;
+		this.password = password;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
+
+}
+```
+
+由於我們不打算實際和資料庫建立連線，所以 UserRepository 裡直接以簡單的方法新增幾筆假資料，實際上真正撰寫專案時則不可能這麼撰寫，請讀者自行留意。
+
