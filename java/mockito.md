@@ -141,5 +141,23 @@ src/main/java
       |-- AuthenticationService.java
 ```
 
-LoginController
+LoginController 視驗證結果回傳下一流程，AuthenticationService 負責驗證邏輯，User 為 DTO 負責封裝處理資料，而 UserRepository 則是模擬和持久層的互動物件，以下是程式碼：
+
+LoginController.java
+
+```java
+package com.java.unitTest.controller;
+
+import com.java.unitTest.service.AuthenticationService;
+
+public class LoginController {
+
+	private AuthenticationService authenticationSvc;
+
+	public String service(String username, String password) {
+		return authenticationSvc.authenticate(username, password) ? "/home" : "/login";
+	}
+
+}
+```
 
