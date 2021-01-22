@@ -425,7 +425,7 @@ public class CalculatorTest {
 * test class 應為 public class，並且方法上不要用 abstract 或 final
 * 每一個測試方法都要加上 @Test
 * Assertion 中只要是 true 的結果都會繼續往下執行，但遇到 fail 則中斷程式
-* 如果有測試方法不想讓他執行，可以加上 @Disabled
+* 如果有測試方法不想讓他執行，可以加上 @Disabled 或 @Ignore
 * 假設結果和預期不同，但不想影響測試結果，可將 Assertions 替代為 Assumptions
 
 ## 參考資源
