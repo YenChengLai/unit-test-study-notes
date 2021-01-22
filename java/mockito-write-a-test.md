@@ -1,8 +1,10 @@
 # Mockito 撰寫測試
 
-### 撰寫第一個 Mockito test
+## 撰寫測試
 
-我們先從建立一隻基本的 Unit Test 開始
+### 程式架構
+
+如同 JUnit 時使用的架構，我們在
 
 ```java
 package com.cathaybk.jUnitTest;
