@@ -154,6 +154,10 @@ public class LoginController {
 
 	private AuthenticationService authenticationSvc;
 
+	public LoginController(AuthenticationService authenticationSvc) {
+		this.authenticationSvc = authenticationSvc;
+	}
+
 	public String service(String username, String password) {
 		return authenticationSvc.authenticate(username, password) ? "/home" : "/login";
 	}
