@@ -68,10 +68,15 @@ public class LoginControllerTest {
 * LoginController 是 SUT，我們希望他盡可能得不要受到其他的外部物件影響狀態，造成測試的結果不穩定，所以 AuthenticationService 設計成 mock object 來固定他的結果。
 * Mockito.mock\(AuthenticationService.class\)：
   * 回傳一個 mock 的 AuthenticationService 物件，擁有真實的 AuthenticationService 物件有的一切接口
-* Mockito.when\(authenticationSvc.authenticate\(Mockito.anyString\(\), Mockito.anyString\(\)\)\)
-  * 設定這個 mock object 在使用任何字串傳入 authenticate 方法時，應觸發後續事件
+* Mockito.when\(authenticationSvc.authenticate\(Mockito.anyString\(\), Mockito.anyString\(\)\)\)：
+  * 註冊這個 mock object 在使用任何字串傳入 authenticate 方法時，應觸發後續事件
   * Mockito.anyString\(\) 代表傳入任何字串參數都會觸發，當然也可以是明確的傳入參數，e.g. authenticationSvc.authenticate\("tom", "tom123"\)，這樣只有傳入 tom 和 tom123 時才會觸發
-* Mockito.thenReturn\(\)
+  * 也可以設定為整個物件，但多數情境都是針對方法註冊
+* Mockito.thenReturn\(true\)：
+  * 搭配 when 使用，如果 when 中註冊的是方法，這裡的回傳值只能是方法的回傳型別，e.g. 因為 authenticate 方法的回傳值是 boolean，這裡的 thenReturn 只能註冊 true 或 false
+  * 簡單來說就是支援範型效果，根據 when 註冊的型別做對應
+
+以下簡單整理一張表：
 
 <table>
   <thead>
