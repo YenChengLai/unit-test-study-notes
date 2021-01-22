@@ -115,18 +115,153 @@ public class LoginControllerTest {
 
 ### 使用 Annotation
 
-為了更順利的說明接下來的概念，我們先增加一隻 UserLookupService.java，程式路徑至於 com.java.unitTest.service 的 package 下，並且修改和其相關聯的 UserRepository.java：
+為了更順利的說明接下來的概念，我們先增加一隻 UserLookupService.java，程式路徑至於 com.java.unitTest.service 的 package 下，並且修改和其相關聯的 User.java、UserRepository.java：
+
+User.java
+
+```java
+package com.java.unitTest.dto;
+
+public class User {
+
+	public enum UserType {
+		REGULAR_USER, ADMIN_USER
+	};
+
+	private String username;
+	private String password;
+	private boolean live = true;
+	private final UserType userType;
+
+	User(String username, String password, UserType userType) {
+		this.username = username;
+		this.password = password;
+		this.userType = userType;
+	}
+
+	public static User createRegularUser(String username, String password) {
+		return new User(username, password, UserType.REGULAR_USER);
+	}
+
+	public static User createAdminUser(String username, String password) {
+		return new User(username, password, UserType.ADMIN_USER);
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public boolean isLive() {
+		return live;
+	}
+
+	public UserType getUserType() {
+		return userType;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (live ? 1231 : 1237);
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((userType == null) ? 0 : userType.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (live != other.live)
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (userType != other.userType)
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
+
+}
+```
 
 UserRepository.java
 
 ```java
+package com.java.unitTest.repository;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.java.unitTest.dto.User;
+
+public class UserRepository {
+
+	private Map<String, User> users = new HashMap<>();
+
+	public UserRepository() {
+		// regular users
+		users.put("john", User.createRegularUser("John", "john123"));
+		users.put("jack", User.createRegularUser("Jack", "jack123"));
+		users.put("peter", User.createRegularUser("Peter", "peter123"));
+		
+		// admin users
+		users.put("frank", User.createAdminUser("Frank", "frank123"));
+	}
+
+	public User findByUserName(String username) {
+		return users.get(username);
+	}
+}
 ```
 
 UserLookupService.java
 
 ```java
+package com.java.unitTest.service;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.java.unitTest.dto.User;
+import com.java.unitTest.repository.UserRepository;
+
+public class UserLookupService {
+
+	private UserRepository userRepository;
+
+	public Set<User> getRegularUsers() {
+		return getUsersByUserType(User.UserType.REGULAR_USER);
+	}
+
+	public Set<User> getAdminUsers() {
+		return getUsersByUserType(User.UserType.ADMIN_USER);
+	}
+
+	private Set<User> getUsersByUserType(User.UserType userType) {
+		return userRepository.findAll().stream().filter(user -> user.isLive() && user.getUserType() == userType)
+				.collect(Collectors.toSet());
+	}
+
+}
 ```
 
 要使用 Mockito 建立 mock object，有兩種方式：
