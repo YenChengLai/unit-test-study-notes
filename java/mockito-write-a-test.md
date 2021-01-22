@@ -4,15 +4,103 @@
 
 ### 程式架構
 
-如同 JUnit 時使用的架構，我們在
+如同 JUnit 時使用的架構，我們在 src/test/main 的路徑底下建立相對應的測試程式：
+
+```text
+src/main/java
+  |-- com.java.unitTest.controller
+      |-- LoginController.java
+  |-- com.java.unitTest.dto
+      |-- User.java
+  |-- com.java.unitTest.repository
+      |-- UserRepository.java
+  |-- com.java.unitTest.service
+      |-- AuthenticationService.java
+src/test/java
+  |-- com.java.unitTest.controller
+      |-- LoginContollerTest.java
+```
+
+### 撰寫測試
+
+因為是登入模組，我們以 LoginController.java 作為 SUT \( 主要測試對象 \)，並運用 Mockito 提供的套件來撰寫測試程式 LoginControllerTest.java：
 
 ```java
-package com.cathaybk.jUnitTest;
+package com.java.unitTest.controller;
 
-public class MockitoTestCase {
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
+import com.java.unitTest.service.AuthenticationService;
+
+public class LoginControllerTest {
+
+	private LoginController loginCtrl; // SUT : System Under Test
+
+	private AuthenticationService authenticationSvc;
+
+	@BeforeEach
+	public void setUp() {
+		authenticationSvc = Mockito.mock(AuthenticationService.class);
+		loginCtrl = new LoginController(authenticationSvc);
+	}
+
+	@Test
+	public void expectedToGetHome() {
+		// arrange
+		Mockito.when(this.authenticationSvc.authenticate(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
+
+		// act
+		String viewPath = loginCtrl.service("visitor", "visit123");
+		
+		// assert
+		Assertions.assertNotNull(viewPath);
+		Assertions.assertEquals("/home", viewPath);
+	}
 }
+
 ```
+
+以下說明幾個觀點與語法：
+
+1. LoginController 是 SUT，我們希望他盡可能得不要受到其他的外部物件影響狀態，造成測試的結果不穩定，所以 AuthenticationService 設計成 mock object 來固定他的結果。
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:center">&#x65B9;&#x6CD5;&#x540D;&#x7A31;</th>
+      <th style="text-align:center">mock()</th>
+      <th style="text-align:center">when()</th>
+      <th style="text-align:center">thenReturn()</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:center">&#x7528;&#x9014;</td>
+      <td style="text-align:center">&#x5EFA;&#x7ACB; mock object</td>
+      <td style="text-align:center">&#x8A3B;&#x518A; mock object &#x7684;&#x60C5;&#x5883;</td>
+      <td style="text-align:center">&#x8A2D;&#x5B9A; mock object &#x60C5;&#x5883;&#x7684;&#x56DE;&#x50B3;&#x503C;</td>
+    </tr>
+    <tr>
+      <td style="text-align:center">&#x50B3;&#x5165;&#x53C3;&#x6578;</td>
+      <td style="text-align:center">class</td>
+      <td style="text-align:center">&#x53EF;&#x4EE5;&#x662F;&#x7269;&#x4EF6;&#x6216;&#x65B9;&#x6CD5;</td>
+      <td
+      style="text-align:center">&#x8996; when &#x7684;&#x50B3;&#x5165;&#x53C3;&#x6578;&#x6C7A;&#x5B9A;</td>
+    </tr>
+    <tr>
+      <td style="text-align:center">&#x56DE;&#x50B3;&#x503C;</td>
+      <td style="text-align:center">mock &#x7269;&#x4EF6;</td>
+      <td style="text-align:center">OngoingStubbing &#x7269;&#x4EF6;</td>
+      <td style="text-align:center">
+        <p>when &#x50B3;&#x5165;&#x7269;&#x4EF6; =&gt; &#x7269;&#x4EF6;</p>
+        <p>when &#x50B3;&#x5165;&#x65B9;&#x6CD5; =&gt; &#x65B9;&#x6CD5;&#x56DE;&#x50B3;&#x503C;</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 要使用 Mockito 建立 mock object，有兩種方式：
 
