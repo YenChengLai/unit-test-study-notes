@@ -66,6 +66,7 @@ public class LoginControllerTest {
 以下說明幾個觀點與語法：
 
 1. LoginController 是 SUT，我們希望他盡可能得不要受到其他的外部物件影響狀態，造成測試的結果不穩定，所以 AuthenticationService 設計成 mock object 來固定他的結果。
+2. Mockito.mock\(\) 
 
 <table>
   <thead>
