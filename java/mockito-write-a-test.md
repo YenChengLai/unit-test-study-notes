@@ -50,7 +50,7 @@ public class LoginControllerTest {
 	@Test
 	public void expectedToGetHome() {
 		// arrange
-		Mockito.when(this.authenticationSvc.authenticate(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
+		Mockito.when(authenticationSvc.authenticate(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
 
 		// act
 		String viewPath = loginCtrl.service("visitor", "visit123");
@@ -65,8 +65,13 @@ public class LoginControllerTest {
 
 以下說明幾個觀點與語法：
 
-1. LoginController 是 SUT，我們希望他盡可能得不要受到其他的外部物件影響狀態，造成測試的結果不穩定，所以 AuthenticationService 設計成 mock object 來固定他的結果。
-2. Mockito.mock\(\) 
+* LoginController 是 SUT，我們希望他盡可能得不要受到其他的外部物件影響狀態，造成測試的結果不穩定，所以 AuthenticationService 設計成 mock object 來固定他的結果。
+* Mockito.mock\(AuthenticationService.class\)：
+  * 回傳一個 mock 的 AuthenticationService 物件，擁有真實的 AuthenticationService 物件有的一切接口
+* Mockito.when\(authenticationSvc.authenticate\(Mockito.anyString\(\), Mockito.anyString\(\)\)\)
+  * 設定這個 mock object 在使用任何字串傳入 authenticate 方法時，應觸發後續事件
+  * Mockito.anyString\(\) 代表傳入任何字串參數都會觸發，當然也可以是明確的傳入參數，e.g. authenticationSvc.authenticate\("tom", "tom123"\)，這樣只有傳入 tom 和 tom123 時才會觸發
+* Mockito.thenReturn\(\)
 
 <table>
   <thead>
