@@ -325,7 +325,7 @@ public class UserLookupServiceTest {
       * 需要在 Class 上加上 @ExtendWith\(MockitoExtension.class\) 和  @RunWith\(MockitoJUnitRunner.class\)
 * 使用 @InjectMocks：
   * 這個 Annotation 的主要目的在於將我們用 @Mock 或 @Spy 的物件自動注入到這個指定的類別中
-  * 剛剛的 UserLookupService.java 第 11 行有一個 UserRepository 物件，在 test 中使用 @InjectMocks 就會將我們剛剛宣告為 @Mock 的 userRepository 注入其中，在實際執行時就會使用這個物件
+  * 舉例來說，剛剛的 UserLookupService.java 第 11 行有一個 UserRepository 物件，在 test 中使用 @InjectMocks 就會將我們剛剛宣告為 @Mock 的 userRepository 注入其中，在實際執行時就會使用這個 mock 物件
   * 讀者自己在嘗試時不妨將這行註解移除，試試看會得到什麼結果
 
 ### 
