@@ -50,7 +50,7 @@ public class LoginControllerTest {
 	@Test
 	public void expectedToGetHome() {
 		// arrange
-		Mockito.when(this.authenticationSvc.authenticate(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
+		Mockito.when(authenticationSvc.authenticate(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
 
 		// act
 		String viewPath = loginCtrl.service("visitor", "visit123");
@@ -65,8 +65,18 @@ public class LoginControllerTest {
 
 以下說明幾個觀點與語法：
 
-1. LoginController 是 SUT，我們希望他盡可能得不要受到其他的外部物件影響狀態，造成測試的結果不穩定，所以 AuthenticationService 設計成 mock object 來固定他的結果。
-2. Mockito.mock\(\) 
+* LoginController 是 SUT，我們希望他盡可能得不要受到其他的外部物件影響狀態，造成測試的結果不穩定，所以 AuthenticationService 設計成 mock object 來固定他的結果。
+* Mockito.mock\(AuthenticationService.class\)：
+  * 回傳一個 mock 的 AuthenticationService 物件，擁有真實的 AuthenticationService 物件有的一切接口
+* Mockito.when\(authenticationSvc.authenticate\(Mockito.anyString\(\), Mockito.anyString\(\)\)\)：
+  * 註冊這個 mock object 在使用任何字串傳入 authenticate 方法時，應觸發後續事件
+  * Mockito.anyString\(\) 代表傳入任何字串參數都會觸發，當然也可以是明確的傳入參數，e.g. authenticationSvc.authenticate\("tom", "tom123"\)，這樣只有傳入 tom 和 tom123 時才會觸發
+  * 也可以設定為整個物件，但多數情境都是針對方法註冊
+* Mockito.thenReturn\(true\)：
+  * 搭配 when 使用，如果 when 中註冊的是方法，這裡的回傳值只能是方法的回傳型別，e.g. 因為 authenticate 方法的回傳值是 boolean，這裡的 thenReturn 只能註冊 true 或 false
+  * 簡單來說就是支援範型效果，根據 when 註冊的型別做對應
+
+以下簡單整理一張表：
 
 <table>
   <thead>
@@ -103,53 +113,214 @@ public class LoginControllerTest {
   </tbody>
 </table>
 
-要使用 Mockito 建立 mock object，有兩種方式：
+### 進階 - 使用 Annotation
 
-1. 使用靜態的 mock\(\) 方法
-2. 使用 @Mock annotation
+為了更順利的說明接下來的概念，我們先增加一隻 UserLookupService.java，程式路徑至於 com.java.unitTest.service 的 package 下，並且修改和其相關聯的 User.java、UserRepository.java：
 
-最後長相：
+User.java
 
 ```java
-package com.cathaybk.jUnitTest;
+package com.java.unitTest.dto;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+public class User {
 
-import java.util.List;
+	public enum UserType {
+		REGULAR_USER, ADMIN_USER
+	};
 
-import org.junit.Rule;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.junit.MockitoRule;
-import org.mockito.junit.jupiter.MockitoExtension;
+	private String username;
+	private String password;
+	private boolean live = true;
+	private final UserType userType;
 
-@ExtendWith(MockitoExtension.class)
-@RunWith(MockitoJUnitRunner.class)
-public class MockitoTestCase {
+	User(String username, String password, UserType userType) {
+		this.username = username;
+		this.password = password;
+		this.userType = userType;
+	}
 
-    @Rule
-    public MockitoRule initRule = MockitoJUnit.rule();
+	public static User createRegularUser(String username, String password) {
+		return new User(username, password, UserType.REGULAR_USER);
+	}
 
-    @Mock
-    List<String> mockList;
+	public static User createAdminUser(String username, String password) {
+		return new User(username, password, UserType.ADMIN_USER);
+	}
 
-    @Test
-    void whenNotUseMockAnnotation_thenCorrect() {
-        mockList.add("one");
-        Mockito.verify(mockList).add("one");
-        assertEquals(0, mockList.size());
+	public String getUsername() {
+		return username;
+	}
 
-        Mockito.when(mockList.size()).thenReturn(100);
-        assertEquals(100, mockList.size());
-    }
+	public String getPassword() {
+		return password;
+	}
+
+	public boolean isLive() {
+		return live;
+	}
+
+	public UserType getUserType() {
+		return userType;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (live ? 1231 : 1237);
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((userType == null) ? 0 : userType.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (live != other.live)
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (userType != other.userType)
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
 
 }
 ```
+
+UserRepository.java
+
+```java
+package com.java.unitTest.repository;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.java.unitTest.dto.User;
+
+public class UserRepository {
+
+	private Map<String, User> users = new HashMap<>();
+
+	public UserRepository() {
+		// regular users
+		users.put("john", User.createRegularUser("John", "john123"));
+		users.put("jack", User.createRegularUser("Jack", "jack123"));
+		users.put("peter", User.createRegularUser("Peter", "peter123"));
+		
+		// admin users
+		users.put("frank", User.createAdminUser("Frank", "frank123"));
+	}
+
+	public User findByUserName(String username) {
+		return users.get(username);
+	}
+}
+```
+
+UserLookupService.java
+
+```java
+package com.java.unitTest.service;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.java.unitTest.dto.User;
+import com.java.unitTest.repository.UserRepository;
+
+public class UserLookupService {
+
+	private UserRepository userRepository;
+
+	public Set<User> getRegularUsers() {
+		return getUsersByUserType(User.UserType.REGULAR_USER);
+	}
+
+	public Set<User> getAdminUsers() {
+		return getUsersByUserType(User.UserType.ADMIN_USER);
+	}
+
+	private Set<User> getUsersByUserType(User.UserType userType) {
+		return userRepository.findAll().stream().filter(user -> user.isLive() && user.getUserType() == userType)
+				.collect(Collectors.toSet());
+	}
+
+}
+```
+
+接下來我們寫一支 UserLookupServiceTest.java：
+
+```java
+package com.java.unitTest.service;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.java.unitTest.dto.User;
+import com.java.unitTest.repository.UserRepository;
+
+@ExtendWith(MockitoExtension.class)
+public class UserLookupServiceTest {
+
+	@Mock
+	private UserRepository userRepository;
+
+	@InjectMocks
+	private UserLookupService userLookupSvc;
+
+	@Test
+	public void getRegularUsers() {
+		// arrange
+		List<User> userList = new LinkedList<>();
+		userList.add(User.createRegularUser("John", "john123"));
+		userList.add(User.createRegularUser("Jack", "jack123"));
+		userList.add(User.createAdminUser("Joseph", "joseph123"));
+
+		Mockito.when(userRepository.findAll()).thenReturn(userList);
+
+		// act
+		Set<User> regularUsers = userLookupSvc.getRegularUsers();
+
+		// assert
+		Assertions.assertNotNull(regularUsers);
+	}
+
+}
+```
+
+
+
+要使用 Mockito 建立 mock object，有兩種方式：
+
+1. 使用靜態的 mock\(\) 方法 \( 也就是上述範例所使用的方法 \)
+2. 使用 @Mock annotation
+
+### 
 
 #### 資源
 
