@@ -113,7 +113,7 @@ public class LoginControllerTest {
   </tbody>
 </table>
 
-### 使用 Annotation
+### 進階 - 使用 Annotation
 
 為了更順利的說明接下來的概念，我們先增加一隻 UserLookupService.java，程式路徑至於 com.java.unitTest.service 的 package 下，並且修改和其相關聯的 User.java、UserRepository.java：
 
@@ -263,6 +263,57 @@ public class UserLookupService {
 
 }
 ```
+
+接下來我們寫一支 UserLookupServiceTest.java：
+
+```java
+package com.java.unitTest.service;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.java.unitTest.dto.User;
+import com.java.unitTest.repository.UserRepository;
+
+@ExtendWith(MockitoExtension.class)
+public class UserLookupServiceTest {
+
+	@Mock
+	private UserRepository userRepository;
+
+	@InjectMocks
+	private UserLookupService userLookupSvc;
+
+	@Test
+	public void getRegularUsers() {
+		// arrange
+		List<User> userList = new LinkedList<>();
+		userList.add(User.createRegularUser("John", "john123"));
+		userList.add(User.createRegularUser("Jack", "jack123"));
+		userList.add(User.createAdminUser("Joseph", "joseph123"));
+
+		Mockito.when(userRepository.findAll()).thenReturn(userList);
+
+		// act
+		Set<User> regularUsers = userLookupSvc.getRegularUsers();
+
+		// assert
+		Assertions.assertNotNull(regularUsers);
+	}
+
+}
+```
+
+
 
 要使用 Mockito 建立 mock object，有兩種方式：
 
