@@ -276,14 +276,17 @@ import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.java.unitTest.dto.User;
 import com.java.unitTest.repository.UserRepository;
 
+@RunWith(MockitoJUnitRunner.class)
 @ExtendWith(MockitoExtension.class)
 public class UserLookupServiceTest {
 
@@ -313,7 +316,15 @@ public class UserLookupServiceTest {
 }
 ```
 
+上面這段程式碼中，有幾點需要說明的事項：
 
+* 使用 @Mock：
+  * 要建立 Mockito 的 mock object 有兩種方式：
+    * Mockito.mock\( 物件class \) =&gt; 我們最一開始使用的方法
+    * @Mock 標記在屬性上，該屬性就會被視為 mock 物件
+      * 需要在 Class 上加上 @ExtendWith\(MockitoExtension.class\) 和  @RunWith\(MockitoJUnitRunner.class\)
+* 使用 @InjectMocks：
+  * 這個 Annotation 的主要目的在於將我們用 @Mock 或 @Spy 的物件自動注入到這個指定的類別中
 
 要使用 Mockito 建立 mock object，有兩種方式：
 
