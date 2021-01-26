@@ -230,6 +230,10 @@ public class UserRepository {
 	public User findByUserName(String username) {
 		return users.get(username);
 	}
+	
+	public List<User> findAll(){
+		return new LinkedList<User>(users.values());
+	}
 }
 ```
 
