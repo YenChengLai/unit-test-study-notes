@@ -230,6 +230,10 @@ public class UserRepository {
 	public User findByUserName(String username) {
 		return users.get(username);
 	}
+	
+	public List<User> findAll(){
+		return new LinkedList<User>(users.values());
+	}
 }
 ```
 
@@ -276,14 +280,17 @@ import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.java.unitTest.dto.User;
 import com.java.unitTest.repository.UserRepository;
 
+@RunWith(MockitoJUnitRunner.class)
 @ExtendWith(MockitoExtension.class)
 public class UserLookupServiceTest {
 
@@ -313,16 +320,21 @@ public class UserLookupServiceTest {
 }
 ```
 
+上面這段程式碼中，有幾點需要說明的事項：
 
-
-要使用 Mockito 建立 mock object，有兩種方式：
-
-1. 使用靜態的 mock\(\) 方法 \( 也就是上述範例所使用的方法 \)
-2. 使用 @Mock annotation
+* 使用 @Mock：
+  * 要建立 Mockito 的 mock object 有兩種方式：
+    * Mockito.mock\( 物件class \) =&gt; 我們最一開始使用的方法
+    * @Mock 標記在屬性上，該屬性就會被視為 mock 物件
+      * 需要在 Class 上加上 @ExtendWith\(MockitoExtension.class\) 和  @RunWith\(MockitoJUnitRunner.class\)
+* 使用 @InjectMocks：
+  * 這個 Annotation 的主要目的在於將我們用 @Mock 或 @Spy 的物件自動注入到這個指定的類別中
+  * 舉例來說，剛剛的 UserLookupService.java 第 11 行有一個 UserRepository 物件，在 test 中使用 @InjectMocks 就會將我們剛剛宣告為 @Mock 的 userRepository 注入其中，在實際執行時就會使用這個 mock 物件
+  * 讀者自己在嘗試時不妨將這行註解移除，試試看會得到什麼結果
 
 ### 
 
-#### 資源
+## 參考資源
 
 Mockito 官方網站：[https://site.mockito.org/](https://site.mockito.org/) 
 
