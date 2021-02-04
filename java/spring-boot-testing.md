@@ -32,6 +32,10 @@ Maven -&gt; Existing Maven Projects
 
 ![](../.gitbook/assets/jie-tu-20210204-xia-wu-5.00.59.png)
 
+至此，專案便完成匯入。
+
+![](../.gitbook/assets/jie-tu-20210204-xia-wu-5.09.59.png)
+
 打開專案可以看到由 Spring Initialzr 幫我們自動生成的 pom.xml：
 
 ```markup
