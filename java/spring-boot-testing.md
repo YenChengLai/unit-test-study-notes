@@ -82,5 +82,5 @@ Maven -&gt; Existing Maven Projects
 </project>
 ```
 
-
+spring-boot-starter-web 這個 jar 檔就是我們在 Spring Initializr 中特別加入的 Spring Web 的 dependency，有了這個 jar 檔我們才可以用 Spring Boot 寫 RESTful 的 Web Service。
 
