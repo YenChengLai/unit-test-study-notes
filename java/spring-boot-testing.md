@@ -96,5 +96,7 @@ spring-boot-starter-test 則是 Spring Initializr 預設帶給我們的，仔細
 
 這些套件是 Spring 官方認為一般在撰寫測試時比較需要用到的套件，所以在建立專案時就會幫我們預先引入了，其中包含我們前面幾篇介紹到比較基礎 JUnit，還有建立mock object 的 Mockito。
 
+### 撰寫前準備
 
+在撰寫 Spring Boot Testing 之前，我們一樣簡單的產幾隻程式，模擬 Spring Boot 建立 RESTful API：
 
