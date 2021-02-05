@@ -107,11 +107,145 @@ spring-boot-starter-test 則是 Spring Initializr 預設帶給我們的，仔細
       |-- UserController.java
   |-- com.java.unitTest.springBootTest.dao
       |-- User.java
-  |-- com.java.unitTest.springBootTest.repo
-      |-- UserRepositoryImpl.java
   |-- com.java.unitTest.springBootTest.service
       |-- UserService.java
-  |-- com.java.unitTest.springBootTest.service
+  |-- com.java.unitTest.springBootTest.service.impl
       |-- UserServiceImpl.java
 ```
+
+除了 SpringBootTestApplication.java 是系統自動生成的以外，其餘的程式碼為我們簡單模擬對持久層存取 User 物件的 RESTFul Web Service。
+
+建立對外接口 UserController.java：
+
+```java
+package com.java.unitTest.springBootTest.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.java.unitTest.springBootTest.dao.User;
+import com.java.unitTest.springBootTest.service.impl.UserServiceImpl;
+
+@RestController
+@RequestMapping("/user")
+public class UserController {
+
+	@Autowired
+	private UserServiceImpl userSvcImpl;
+
+	@GetMapping("hello")
+	public String hello(@RequestParam("name") String name) {
+		return "Hello, " + name;
+	}
+
+	@GetMapping("save")
+	public void saveUser(@RequestParam("name") String name, @RequestParam("age") int age) {
+		userSvcImpl.addUser(new User(name, age));
+	}
+
+}
+```
+
+設定處理 User 的 DAO  User.java：
+
+```java
+package com.java.unitTest.springBootTest.dao;
+
+public class User {
+
+	public User(String name, int age) {
+		this.name = name;
+		this.age = age;
+	}
+
+	private String name;
+
+	private int age;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + age;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (age != other.age)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+}
+```
+
+定義邏輯的抽象介面 UserService.java，並在此定義新增 User 的 addUser 抽象方法：
+
+```java
+package com.java.unitTest.springBootTest.service;
+
+import com.java.unitTest.springBootTest.dao.User;
+
+public interface UserService {
+
+	void addUser(User user);
+
+}
+```
+
+實作抽象方法的 UserServiceImpl.java，此處用打印的方式取代實際存取資料庫：
+
+```java
+package com.java.unitTest.springBootTest.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import com.java.unitTest.springBootTest.dao.User;
+import com.java.unitTest.springBootTest.service.UserService;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+	@Override
+	public void addUser(User user) {
+		System.out.println("User: " + user.getName() + " " + user.getAge() + " is saved.");
+	}
+
+}
+```
+
+
 
