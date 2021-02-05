@@ -247,5 +247,19 @@ public class UserServiceImpl implements UserService {
 }
 ```
 
+我們接著啟動專案後來驗證 Controller 的兩個入口是否有效：
 
+#### 測試 hello 入口：
+
+在 url 中輸入： [http://localhost:8080/user/hello?name=Frank](http://localhost:8080/user/hello?name=Frank)，則應該會看到 Hello, Frank：
+
+![](../.gitbook/assets/jie-tu-20210205-xia-wu-5.14.21.png)
+
+#### 測試 save 入口：
+
+在 url 中輸入：[http://localhost:8080/user/save?name=Frank&age=28](http://localhost:8080/user/save?name=Frank&age=28) ，則在 eclipse 的 console 中應看到我們設定的打印文字：
+
+![](../.gitbook/assets/jie-tu-20210205-xia-wu-5.19.57.png)
+
+至此，基本設定完成。
 
