@@ -94,5 +94,7 @@ spring-boot-starter-test 則是 Spring Initializr 預設帶給我們的，仔細
 * JSONAssert
 * JsonPath
 
-這些套件是 Spring 官方認為一般在撰寫測試時比較需要用到的套件，所以在建立專案時就會幫我們預先引入了。
+這些套件是 Spring 官方認為一般在撰寫測試時比較需要用到的套件，所以在建立專案時就會幫我們預先引入了，其中包含我們前面幾篇介紹到比較基礎 JUnit，還有建立mock object 的 Mockito。
+
+
 
