@@ -98,7 +98,7 @@ spring-boot-starter-test 則是 Spring Initializr 預設帶給我們的，仔細
 
 ### 撰寫前準備
 
-在撰寫 Spring Boot Testing 之前，我們一樣簡單的產幾隻程式，模擬 Spring Boot 建立 RESTful API：
+在撰寫 Spring Boot Testing 之前，我們一樣簡單的產幾隻程式，模擬 Spring Boot 建立 RESTful API 的程式架構：
 
 ```text
   |-- com.java.unitTest.springBootTest
