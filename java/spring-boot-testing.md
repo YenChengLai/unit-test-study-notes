@@ -84,3 +84,15 @@ Maven -&gt; Existing Maven Projects
 
 spring-boot-starter-web 這個 jar 檔就是我們在 Spring Initializr 中特別加入的 Spring Web 的 dependency，有了這個 jar 檔我們才可以用 Spring Boot 寫 RESTful 的 Web Service。
 
+spring-boot-starter-test 則是 Spring Initializr 預設帶給我們的，仔細看他在 pom.xml 中的配置，scope 為 test 代表只有測試時會引入這些資源，在 IDE 中按住 Ctrl \(Mac OS 按 Command\)，點擊 spring-boot-starter-test 就能夠檢視這個 jar 裡面究竟有什麼其他的 jar 的資源，這邊列出比較重要的有：
+
+* JUnit 5
+* Spring Test 和 Spring Boot Test
+* AssertJ
+* Hamcrest
+* Mockito
+* JSONAssert
+* JsonPath
+
+這些套件是 Spring 官方認為一般在撰寫測試時比較需要用到的套件，所以在建立專案時就會幫我們預先引入了。
+
