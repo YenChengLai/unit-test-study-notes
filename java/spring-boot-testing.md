@@ -12,7 +12,7 @@ Spring Boot 是現在 Java 語言最流行的 Spring framework 的進階精簡�
 
 要從零開始建立一個 Spring Boot 專案其實非常簡單，Spring 框架至今已發展近 20 年，也有完善的生態系以及資源供我們使用。我們先前往以下網站，就可以建立一個簡單的 Spring Boot 專案：[https://start.spring.io/](https://start.spring.io/) 
 
-![](../.gitbook/assets/jie-tu-20210204-xia-wu-4.50.29.png)
+![](../.gitbook/assets/jie-tu-20210205-xia-wu-1.59.12.png)
 
 進入網站後我們一樣選擇 Maven Project，按照之前建立 Maven Project 的方式，撰寫 GroupId 和 ArtifactId，Spring Initializr 會幫我們按照上面的配置建立 Maven 專案。因為我們要做的是一個 RESTful API 的 Spring Boot 專案，所以在 Add Dependencies 上記得要加上 Spring Web。
 
@@ -99,4 +99,19 @@ spring-boot-starter-test 則是 Spring Initializr 預設帶給我們的，仔細
 ### 撰寫前準備
 
 在撰寫 Spring Boot Testing 之前，我們一樣簡單的產幾隻程式，模擬 Spring Boot 建立 RESTful API：
+
+```text
+  |-- com.java.unitTest.springBootTest
+      |-- SpringBootTestApplication.java
+  |-- com.java.unitTest.springBootTest.controller
+      |-- UserController.java
+  |-- com.java.unitTest.springBootTest.dao
+      |-- User.java
+  |-- com.java.unitTest.springBootTest.repo
+      |-- UserRepositoryImpl.java
+  |-- com.java.unitTest.springBootTest.service
+      |-- UserService.java
+  |-- com.java.unitTest.springBootTest.service
+      |-- UserServiceImpl.java
+```
 
