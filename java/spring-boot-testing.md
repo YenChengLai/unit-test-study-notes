@@ -324,5 +324,19 @@ class SpringBootTestApplicationTests {
 
 ![SpringBootTest &#x4E2D;&#x5DF2;&#x5BA3;&#x544A; SpringExtension &#x7684;&#x52A0;&#x8F09;](../.gitbook/assets/jie-tu-20210208-xia-wu-2.32.06.png)
 
+此外，如果按照本篇的環境撰寫時，不難發現我們如果嘗試用 @RunWith 的寫法時，eclipse 會告訴我們找不到 jar，如下圖：
 
+![](../.gitbook/assets/jie-tu-20210208-xia-wu-2.46.16.png)
+
+圖中能看到 eclipse 的建議解法是加載 JUnit 4 的函式庫，原因就是因為我們使用的版本為 JUnit 5 ，如果要使用 JUnit 4 的 @RunWith 寫法，建議不要按照 eclipse 的建議加載 JUnit 4，而是應該要使用我們在介紹 JUnit 5 時提過的 JUnit Vintage，它的用途正是兼容 JUnit 5 以下版本。所以我們會在 pom.xml 加上這段：
+
+```markup
+<dependency>
+    <groupId>org.junit.vintage</groupId>
+		<artifactId>junit-vintage-engine</artifactId>
+		<scope>test</scope>
+</dependency>
+```
+
+如此便能夠使用 JUnit 4 的 @RunWith 寫法。
 
