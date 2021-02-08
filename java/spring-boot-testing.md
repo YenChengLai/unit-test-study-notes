@@ -265,6 +265,8 @@ public class UserServiceImpl implements UserService {
 
 ## 撰寫測試
 
+### 基本介紹
+
 在專案建立完成後，可以看到系統預設提供的 src/test/java 底下的有 Spring Initializr 幫我們建立好的測試類別，該類別的名稱會依照我們在建立專案時輸入的內容而定，此處的命名為 `SpringBootTestApplicationTests.java`，以下是他預設的樣貌：
 
 ```java
@@ -289,6 +291,8 @@ class SpringBootTestApplicationTests {
 * @SpringBootTest：
   * 宣告當前類別為測試類別
   * 載入 Spring Boot 的啟動類別，於測試時啟動 Spring Boot 環境執行測試
+
+### 版本差異說明
 
 如果你有看過幾隻 Spring Boot 的單元測試，可能會看到這種寫法：
 
@@ -339,4 +343,6 @@ class SpringBootTestApplicationTests {
 ```
 
 如此便能夠使用 JUnit 4 的 @RunWith 寫法。
+
+
 
