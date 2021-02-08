@@ -263,3 +263,25 @@ public class UserServiceImpl implements UserService {
 
 至此，基本設定完成。
 
+## 撰寫測試
+
+在專案建立完成後，可以看到系統預設提供的 src/test/java 底下的有 Spring Initializr 幫我們建立好的測試類別，該類別的名稱會依照我們在建立專案時輸入的內容而定，此處的命名為 `SpringBootTestApplicationTests.java`，以下是他預設的樣貌：
+
+```java
+package com.java.unitTest.springBootTest;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class SpringBootTestApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
+```
+
+
+
