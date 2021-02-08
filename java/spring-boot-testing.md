@@ -310,10 +310,19 @@ class SpringBootTestApplicationTests {
 
 * @RunWith 和 @ContextConfiguration 寫法 \( JUnit 4 寫法 \)
   * @RunWith
-    * 用意是指定以哪個 class 去運行這個 JUnit 測試，沒有指定的話，JUnit 4 預設會使用 JUnit 的預設運行程式 `BlockJUnit4ClassRunner`這個類別執行測試。
+    * 用意是指定以哪個 class 去運行這個 JUnit 測試，沒有指定的話，JUnit 4 預設會使用 JUnit 的預設運行程式 `BlockJUnit4ClassRunner`這個類別執行測試
     * 此處使用 SpringJUnit4ClassRunner.class 是為引用 Spring 的執行環境
-  * @ContextConfiguratrion 是
-* * @RunWith 的 annotation 我們在之前的篇幅中也曾經寫過，他的用意是指定以哪個 class 去運行這個 JUnit 測試，而在 JUnit 
+  * @ContextConfiguratrion
+    *  用意為整合 JUnit 和 Spring 的環境，會去讀指定路徑的配置檔進行整合
+* @ExtendWith 和 @SpringBootTest 寫法 \( JUnit 5 寫法 \)
+  * @ExtendWith
+    * 和 JUnit 4 時的 @RunWith 寫法相同，目的是指定運行類別，不同的地方是內容參數要改為引用 SpringExtension.class
+  * @SpringBootTest
+    * 如同我們上面介紹，用意為宣告測試類別
+
+由於我們這一系列一開始就已經提過，我們會以 JUnit 5 為主要的測試版本，所以 @RunWith 的寫法我們不會採用。此外，隨著版本的更替，其實 @SpringBootTest 就包含了 @ExtendWith 的宣告，所以我們才僅需要寫 @SpringBootTest 即可
+
+![SpringBootTest &#x4E2D;&#x5DF2;&#x5BA3;&#x544A; SpringExtension &#x7684;&#x52A0;&#x8F09;](../.gitbook/assets/jie-tu-20210208-xia-wu-2.32.06.png)
 
 
 
