@@ -283,5 +283,10 @@ class SpringBootTestApplicationTests {
 }
 ```
 
+在這裡我們看到兩個 annotation，分別是 @SpringBootTest 和 @Test：
+
+* @Test：如同我們在前篇章節中所介紹的內容
+* @SpringBootTest：Spring Boot 框架中要使用 Spring 環境進行測試所需要加上
+
 
 
