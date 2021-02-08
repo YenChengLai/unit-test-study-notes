@@ -285,8 +285,20 @@ class SpringBootTestApplicationTests {
 
 在這裡我們看到兩個 annotation，分別是 @SpringBootTest 和 @Test：
 
-* @Test：如同我們在前篇章節中所介紹的內容
-* @SpringBootTest：Spring Boot 框架中要使用 Spring 環境進行測試所需要加上
+* @Test：如同我們在前篇章節中所介紹的內容，執行測試時會啟動該方法
+* @SpringBootTest：
+  * 宣告當前類別為測試類別
+  * 載入 Spring Boot 的啟動類別，於測試時啟動 Spring Boot 環境執行測試
+
+在更之前的版本，我們可能會看到這種寫法：
+
+```java
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = { SpringBootTestApplication.class })
+class SpringBootTestApplicationTests {
+```
+
+
 
 
 
