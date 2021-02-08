@@ -290,15 +290,30 @@ class SpringBootTestApplicationTests {
   * 宣告當前類別為測試類別
   * 載入 Spring Boot 的啟動類別，於測試時啟動 Spring Boot 環境執行測試
 
-在更之前的版本，我們可能會看到這種寫法：
+如果你有看過幾隻 Spring Boot 的單元測試，可能會看到這種寫法：
 
 ```java
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = { SpringBootTestApplication.class })
+@ContextConfiguration(locations = { "classpath:application.xml" })
 class SpringBootTestApplicationTests {
 ```
 
+或者是這種寫法：
 
+```java
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+class SpringBootTestApplicationTests {
+```
+
+事實上，並非這些寫法就不對，只是因為 JUnit 和 Spring 的版本的更改後，撰寫的方式上也差距不少，以下一一說明：
+
+* @RunWith 和 @ContextConfiguration 寫法 \( JUnit 4 寫法 \)
+  * @RunWith
+    * 用意是指定以哪個 class 去運行這個 JUnit 測試，沒有指定的話，JUnit 4 預設會使用 JUnit 的預設運行程式 `BlockJUnit4ClassRunner`這個類別執行測試。
+    * 此處使用 SpringJUnit4ClassRunner.class 是為引用 Spring 的執行環境
+  * @ContextConfiguratrion 是
+* * @RunWith 的 annotation 我們在之前的篇幅中也曾經寫過，他的用意是指定以哪個 class 去運行這個 JUnit 測試，而在 JUnit 
 
 
 
