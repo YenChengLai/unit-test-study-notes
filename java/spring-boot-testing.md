@@ -221,6 +221,41 @@ public class User {
 }
 ```
 
+調用對持久層操作的 UserRepository.java：
+
+\( 此處我們以靜態集合的方式取代實際對持久層操作，真實專案上應對資料庫或檔案做實際存取 \)
+
+```java
+package com.java.unitTest.springBootTest.repository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.java.unitTest.springBootTest.dao.User;
+
+@Repository
+public class UserRepository {
+
+	private static List<User> users;
+
+	public List<User> getUsers() {
+		if (users == null)
+			users = new ArrayList<>();
+		return users;
+	}
+
+	public void saveUser(User user) {
+		if (users == null) {
+			users = new ArrayList<>();
+		}
+		users.add(user);
+	}
+
+}
+```
+
 定義邏輯的抽象介面 UserService.java，並在此定義新增 User 的 addUser 抽象方法：
 
 ```java
@@ -272,42 +307,7 @@ public class UserServiceImpl implements UserService {
 }
 ```
 
-調用對持久層操作的 UserRepository.java：
-
-\( 此處我們以靜態集合的方式取代實際對持久層操作，真實專案上應對資料庫或檔案做實際存取 \)
-
-```java
-package com.java.unitTest.springBootTest.repository;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.stereotype.Repository;
-
-import com.java.unitTest.springBootTest.dao.User;
-
-@Repository
-public class UserRepository {
-
-	private static List<User> users;
-
-	public List<User> getUsers() {
-		if (users == null)
-			users = new ArrayList<>();
-		return users;
-	}
-
-	public void saveUser(User user) {
-		if (users == null) {
-			users = new ArrayList<>();
-		}
-		users.add(user);
-	}
-
-}
-```
-
-我們接著啟動專案後來驗證 Controller 的兩個入口是否有效：
+我們接著啟動專案後來驗證 Controller 的幾個入口是否有效：
 
 #### 測試 hello 入口：
 
@@ -317,9 +317,15 @@ public class UserRepository {
 
 #### 測試 save 入口：
 
-在 url 中輸入：[http://localhost:8080/user/save?name=Frank&age=28](http://localhost:8080/user/save?name=Frank&age=28) ，則在 eclipse 的 console 中應看到我們設定的打印文字：
+在 url 中輸入：[http://localhost:8080/user/save?name=Frank&age=28](http://localhost:8080/user/save?name=Frank&age=28)，就會把 User 的資料存在我們寫的靜態集合中
 
-![](../.gitbook/assets/jie-tu-20210205-xia-wu-5.19.57.png)
+
+
+#### 測試 getUsers 入口：
+
+剛剛執行完 save 的請求後，我們可以接著透過 getUsers 入口取得目前所有的 User，在 url 中輸入：[http://localhost:8080/user/getUsers](http://localhost:8080/user/getUsers)，就可以在結果中看到剛剛新增的 User
+
+![&#x547C;&#x53EB; getUsers &#x80FD;&#x770B;&#x5230;&#x525B;&#x525B;&#x65B0;&#x589E;&#x7684; User](../.gitbook/assets/jie-tu-20210209-shang-wu-10.37.29.png)
 
 至此，基本設定完成。
 
