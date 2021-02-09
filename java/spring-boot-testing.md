@@ -414,6 +414,47 @@ class SpringBootTestApplicationTests {
 
 接下來我們一樣以`SpringBootTestApplicationTest.java` 做測試程式，實際從頭開始撰寫實際的 Spring Boot 測試案例：
 
+```java
+package com.java.unitTest.springBootTest;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.java.unitTest.springBootTest.dao.User;
+import com.java.unitTest.springBootTest.service.impl.UserServiceImpl;
+
+@SpringBootTest
+class SpringBootTestApplicationTests {
+
+	@Mock
+	private UserServiceImpl userSvcImpl;
+
+	@Test
+	void testSaveUser() {
+
+		List<User> mockUserList = new ArrayList<>();
+		mockUserList.add(new User("Jack", 24));
+		mockUserList.add(new User("Frank", 26));
+		mockUserList.add(new User("Peter", 28));
+
+		Mockito.when(userSvcImpl.getUsers()).thenReturn(mockUserList);
+
+		Assertions.assertEquals(3, userSvcImpl.getUsers().size());
+	}
+
+}
+```
+
+這邊我們一樣是使用 Mockito 來模擬對於持久層物件的操作，畢竟對於 DB 的操作應該是單元測試的範疇之外。我們要著重管理與測試的部分，仍舊應是 Service 中關於邏輯的方法部分。
+
+但如果我們只是針對 Service 使用 Mockito 進行管理，不難發現仍會調用到真實的 Repository 物件對資料庫進行存取，所以我們將剛才的測試方法進行修正：
+
 
 
 
