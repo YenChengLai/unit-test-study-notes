@@ -107,6 +107,8 @@ spring-boot-starter-test 則是 Spring Initializr 預設帶給我們的，仔細
       |-- UserController.java
   |-- com.java.unitTest.springBootTest.dao
       |-- User.java
+  |-- com.java.unitTest.springBootTest.repository
+      |-- UserRepository.java
   |-- com.java.unitTest.springBootTest.service
       |-- UserService.java
   |-- com.java.unitTest.springBootTest.service.impl
@@ -119,6 +121,8 @@ spring-boot-starter-test 則是 Spring Initializr 預設帶給我們的，仔細
 
 ```java
 package com.java.unitTest.springBootTest.controller;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -144,6 +148,11 @@ public class UserController {
 	@GetMapping("save")
 	public void saveUser(@RequestParam("name") String name, @RequestParam("age") int age) {
 		userSvcImpl.addUser(new User(name, age));
+	}
+
+	@GetMapping("getUsers")
+	public List<User> getUser() {
+		return userSvcImpl.getUsers();
 	}
 
 }
@@ -217,31 +226,82 @@ public class User {
 ```java
 package com.java.unitTest.springBootTest.service;
 
+import java.util.List;
+
 import com.java.unitTest.springBootTest.dao.User;
 
 public interface UserService {
 
 	void addUser(User user);
+	
+	List<User> getUsers();
 
 }
 ```
 
-實作抽象方法的 UserServiceImpl.java，此處用打印的方式取代實際存取資料庫：
+實作抽象方法的 UserServiceImpl.java：
 
 ```java
 package com.java.unitTest.springBootTest.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.java.unitTest.springBootTest.dao.User;
+import com.java.unitTest.springBootTest.repository.UserRepository;
 import com.java.unitTest.springBootTest.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+	@Autowired
+	private UserRepository userRepo;
+
 	@Override
 	public void addUser(User user) {
-		System.out.println("User: " + user.getName() + " " + user.getAge() + " is saved.");
+		userRepo.saveUser(user);
+	}
+
+	@Override
+	public List<User> getUsers() {
+		return userRepo.getUsers();
+	}
+
+}
+```
+
+調用對持久層操作的 UserRepository.java：
+
+\( 此處我們以靜態集合的方式取代實際對持久層操作，真實專案上應對資料庫或檔案做實際存取 \)
+
+```java
+package com.java.unitTest.springBootTest.repository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.java.unitTest.springBootTest.dao.User;
+
+@Repository
+public class UserRepository {
+
+	private static List<User> users;
+
+	public List<User> getUsers() {
+		if (users == null)
+			users = new ArrayList<>();
+		return users;
+	}
+
+	public void saveUser(User user) {
+		if (users == null) {
+			users = new ArrayList<>();
+		}
+		users.add(user);
 	}
 
 }
@@ -343,6 +403,12 @@ class SpringBootTestApplicationTests {
 ```
 
 如此便能夠使用 JUnit 4 的 @RunWith 寫法。
+
+### 撰寫測試方法
+
+接下來我們一樣以`SpringBootTestApplicationTest.java` 做測試程式，實際從頭開始撰寫實際的 Spring Boot 測試案例：
+
+
 
 
 
