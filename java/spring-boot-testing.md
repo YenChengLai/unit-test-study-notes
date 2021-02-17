@@ -390,7 +390,7 @@ class SpringBootTestApplicationTests {
   * @SpringBootTest
     * 如同我們上面介紹，用意為宣告測試類別
 
-由於我們這一系列一開始就已經提過，我們會以 JUnit 5 為主要的測試版本，所以 @RunWith 的寫法我們不會採用。此外，隨著版本的更替，其實 @SpringBootTest 就包含了 @ExtendWith 的宣告，所以我們才僅需要寫 @SpringBootTest 即可
+由於我們這一系列一開始就已經提過，我們會以 JUnit 5 為主要的測試版本，所以 @RunWith 的寫法我們不會採用。此外，隨著版本的更替，其實 @SpringBootTest 就包含了 @ExtendWith 的宣告，所以我們才僅需要寫 @SpringBootTest 即可。
 
 ![SpringBootTest &#x4E2D;&#x5DF2;&#x5BA3;&#x544A; SpringExtension &#x7684;&#x52A0;&#x8F09;](../.gitbook/assets/jie-tu-20210208-xia-wu-2.32.06.png)
 
@@ -513,7 +513,35 @@ class SpringBootTestApplicationTests {
 }
 ```
 
-乍看之下，程式碼變得比之前還要長上不少
+乍看之下，程式碼變得比之前還要長上不少，實際上卻遠遠沒有這麼複雜，剛剛的程式碼中我們其實只做了以下幾個大改動：
 
+1. 將 Mock 物件從 UserServiceImpl 物件改為 UserRepository 物件
+2. 把準備好的 UserRepository 物件注入到 UserServiceImpl 中
+3. 改寫 @Test 方法測試透過 UserServiceImpl 對於持久層的 Mock 操作
 
+以下一一說明：
+
+\(1\) 將 Mock 物件從 UserServiceImpl 物件改為 UserRepository 物件：
+
+對於單元測試來說，真正需要用 Mock 物件的是對於持久層的操作，對於 Service 層用 Mock 其實沒有意義，所以我們將 @Mock 改為 UserRepository。
+
+\(2\) 把準備好的 UserRepository 物件注入到 UserServiceImpl 中：
+
+我們希望在測試邏輯時，對於資料庫操作的部分會直接調用到 Mock 物件，所以要將 @Mock 標注的 UserRepository 物件注入到 UserServiceImpl 中，注入方法一樣在 UserServiceImpl 物件中標上 @InjectMocks，如此一來每當測試時使用到持久層的部分時，就不會真的去建立連線或讀檔，而是使用我們設定的 Mock 物件。
+
+\(3\) 改寫 @Test 方法測試透過 UserServiceImpl 對於持久層的 Mock 操作：
+
+這部分做的改動就比較多了，實際測試上我們操作 UserServiceImpl 的 addUser 方法，將建立好的 User 資料存進持久層，再透過 getUsers 方法，取出查看是否存取成功，操作的手法其實和上一篇我們在撰寫 Mockito 的測試上相同。
+
+比較要注意的是 saveUser 的回傳值是 void 所以我們不能像之前一樣用 Mockito.when\(...\).thenReturn\(...\) 的寫法，所以此處我們使用的是 doAnswer 的寫法，doAnswer 方法讓我們可以在 void 方法時透過 override answer 方法，由 InvocationOnMock 物件中取得參數，去執行我們想做的事，此處是將該 User 物件加入 mockUsers 的物件集合中。
+
+### 總結
+
+結合以上的幾點說明，不難發現 Spring Boot 的單元測試上雖然有其獨特性，但多數都是和 JUnit 以及 Mockito 的概念相同，只是測試執行上要去運行 Spring Boot 的環境罷了。
+
+## 參考資源
+
+Spring Boot 官方文件：[https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html\#boot-features-testing](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-testing)
+
+Baeldung 教學文件：[https://www.baeldung.com/mockito-void-methods](https://www.baeldung.com/mockito-void-methods)
 
