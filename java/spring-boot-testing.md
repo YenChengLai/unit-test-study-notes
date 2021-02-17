@@ -533,5 +533,15 @@ class SpringBootTestApplicationTests {
 
 這部分做的改動就比較多了，實際測試上我們操作 UserServiceImpl 的 addUser 方法，將建立好的 User 資料存進持久層，再透過 getUsers 方法，取出查看是否存取成功，操作的手法其實和上一篇我們在撰寫 Mockito 的測試上相同。
 
-比較要注意的是 saveUser 的回傳值是 void 所以我們不能像之前一樣用 Mockito.when\(...\).thenReturn\(...\) 的寫法，所以此處我們使用的
+比較要注意的是 saveUser 的回傳值是 void 所以我們不能像之前一樣用 Mockito.when\(...\).thenReturn\(...\) 的寫法，所以此處我們使用的是 doAnswer 的寫法，doAnswer 方法讓我們可以在 void 方法時透過 override answer 方法，由 InvocationOnMock 物件中取得參數，去執行我們想做的事，此處是將該 User 物件加入 mockUsers 的物件集合中。
+
+### 總結
+
+結合以上的幾點說明，不難發現 Spring Boot 的單元測試上雖然有其獨特性，但多數都是和 JUnit 以及 Mockito 的概念相同，只是測試執行上要去運行 Spring Boot 的環境罷了。
+
+## 參考資源
+
+Spring Boot 官方文件：[https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html\#boot-features-testing](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-testing)
+
+Baeldung 教學文件：[https://www.baeldung.com/mockito-void-methods](https://www.baeldung.com/mockito-void-methods)
 
