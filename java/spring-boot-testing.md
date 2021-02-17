@@ -390,7 +390,7 @@ class SpringBootTestApplicationTests {
   * @SpringBootTest
     * 如同我們上面介紹，用意為宣告測試類別
 
-由於我們這一系列一開始就已經提過，我們會以 JUnit 5 為主要的測試版本，所以 @RunWith 的寫法我們不會採用。此外，隨著版本的更替，其實 @SpringBootTest 就包含了 @ExtendWith 的宣告，所以我們才僅需要寫 @SpringBootTest 即可
+由於我們這一系列一開始就已經提過，我們會以 JUnit 5 為主要的測試版本，所以 @RunWith 的寫法我們不會採用。此外，隨著版本的更替，其實 @SpringBootTest 就包含了 @ExtendWith 的宣告，所以我們才僅需要寫 @SpringBootTest 即可。
 
 ![SpringBootTest &#x4E2D;&#x5DF2;&#x5BA3;&#x544A; SpringExtension &#x7684;&#x52A0;&#x8F09;](../.gitbook/assets/jie-tu-20210208-xia-wu-2.32.06.png)
 
@@ -523,13 +523,15 @@ class SpringBootTestApplicationTests {
 
 \(1\) 將 Mock 物件從 UserServiceImpl 物件改為 UserRepository 物件：
 
-對於單元測試來說，真正需要用 Mock 物件的是對於持久層的操作，對於 Service 層用 Mock 其實沒有意義，所以我們將 @Mock 改為 UserRepository
+對於單元測試來說，真正需要用 Mock 物件的是對於持久層的操作，對於 Service 層用 Mock 其實沒有意義，所以我們將 @Mock 改為 UserRepository。
 
 \(2\) 把準備好的 UserRepository 物件注入到 UserServiceImpl 中：
 
-我們希望在測試邏輯時，對於資料庫操作的部分會直接調用到 Mock 物件，所以要將 @Mock 標注的 UserRepository 物件注入到 UserServiceImpl 中，注入方法一樣在 UserServiceImpl 物件中標上 @InjectMocks，如此一來每當測試時使用到持久層的部分時，就不會真的去建立連線或讀檔，而是使用我們設定的 Mock 物件
+我們希望在測試邏輯時，對於資料庫操作的部分會直接調用到 Mock 物件，所以要將 @Mock 標注的 UserRepository 物件注入到 UserServiceImpl 中，注入方法一樣在 UserServiceImpl 物件中標上 @InjectMocks，如此一來每當測試時使用到持久層的部分時，就不會真的去建立連線或讀檔，而是使用我們設定的 Mock 物件。
 
 \(3\) 改寫 @Test 方法測試透過 UserServiceImpl 對於持久層的 Mock 操作：
 
+這部分做的改動就比較多了，實際測試上我們操作 UserServiceImpl 的 addUser 方法，將建立好的 User 資料存進持久層，再透過 getUsers 方法，取出查看是否存取成功，操作的手法其實和上一篇我們在撰寫 Mockito 的測試上相同。
 
+比較要注意的是因為 saveUser 的回傳值是 void 所以我們不能像前一篇一樣使用 Mockito.when\(....\).thenReturn\(...\) 的寫法
 
