@@ -455,6 +455,64 @@ class SpringBootTestApplicationTests {
 
 但如果我們只是針對 Service 使用 Mockito 進行管理，不難發現仍會調用到真實的 Repository 物件對資料庫進行存取，所以我們將剛才的測試方法進行修正：
 
+```java
+package com.java.unitTest.springBootTest;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.java.unitTest.springBootTest.dao.User;
+import com.java.unitTest.springBootTest.repository.UserRepository;
+import com.java.unitTest.springBootTest.service.impl.UserServiceImpl;
+
+@SpringBootTest
+class SpringBootTestApplicationTests {
+
+	@Mock
+	private UserRepository userRepo;
+
+	@InjectMocks
+	private UserServiceImpl userSvcImpl;
+
+	@Test
+	void testSaveUser() {
+		List<User> mockUsers = new ArrayList<>();
+
+		Mockito.doAnswer(new Answer<Void>() {
+			public Void answer(InvocationOnMock invocation) {
+				User user = invocation.getArgument(0);
+				mockUsers.add(user);
+				return null;
+			}
+		}).when(userRepo).saveUser(Mockito.any(User.class));
+
+		Mockito.when(userSvcImpl.getUsers()).thenReturn(mockUsers);
+
+		userSvcImpl.addUser(new User("Jack", 24));
+		userSvcImpl.addUser(new User("Frank", 26));
+		userSvcImpl.addUser(new User("Peter", 28));
+
+		Assertions.assertEquals(3, userSvcImpl.getUsers().size());
+		Assertions.assertEquals("Jack", userSvcImpl.getUsers().get(0).getName());
+		Assertions.assertEquals("Frank", userSvcImpl.getUsers().get(1).getName());
+		Assertions.assertEquals("Peter", userSvcImpl.getUsers().get(2).getName());
+		Assertions.assertEquals(24, userSvcImpl.getUsers().get(0).getAge());
+		Assertions.assertEquals(26, userSvcImpl.getUsers().get(1).getAge());
+		Assertions.assertEquals(28, userSvcImpl.getUsers().get(2).getAge());
+	}
+
+}
+```
+
 
 
 
