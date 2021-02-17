@@ -513,7 +513,23 @@ class SpringBootTestApplicationTests {
 }
 ```
 
-乍看之下，程式碼變得比之前還要長上不少
+乍看之下，程式碼變得比之前還要長上不少，實際上卻遠遠沒有這麼複雜，剛剛的程式碼中我們其實只做了以下幾個大改動：
+
+1. 將 Mock 物件從 UserServiceImpl 物件改為 UserRepository 物件
+2. 把準備好的 UserRepository 物件注入到 UserServiceImpl 中
+3. 改寫 @Test 方法測試透過 UserServiceImpl 對於持久層的 Mock 操作
+
+以下一一說明：
+
+\(1\) 將 Mock 物件從 UserServiceImpl 物件改為 UserRepository 物件：
+
+對於單元測試來說，真正需要用 Mock 物件的是對於持久層的操作，對於 Service 層用 Mock 其實沒有意義，所以我們將 @Mock 改為 UserRepository
+
+\(2\) 把準備好的 UserRepository 物件注入到 UserServiceImpl 中：
+
+我們希望在測試邏輯時，對於資料庫操作的部分會直接調用到 Mock 物件，所以要將 @Mock 標注的 UserRepository 物件注入到 UserServiceImpl 中，注入方法一樣在 UserServiceImpl 物件中標上 @InjectMocks，如此一來每當測試時使用到持久層的部分時，就不會真的去建立連線或讀檔，而是使用我們設定的 Mock 物件
+
+\(3\) 改寫 @Test 方法測試透過 UserServiceImpl 對於持久層的 Mock 操作：
 
 
 
