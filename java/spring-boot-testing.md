@@ -533,5 +533,5 @@ class SpringBootTestApplicationTests {
 
 這部分做的改動就比較多了，實際測試上我們操作 UserServiceImpl 的 addUser 方法，將建立好的 User 資料存進持久層，再透過 getUsers 方法，取出查看是否存取成功，操作的手法其實和上一篇我們在撰寫 Mockito 的測試上相同。
 
-比較要注意的是因為 saveUser 的回傳值是 void 所以我們不能像前一篇一樣使用 Mockito.when\(....\).thenReturn\(...\) 的寫法
+比較要注意的是 saveUser 的回傳值是 void 所以我們不能像之前一樣用 Mockito.when\(...\).thenReturn\(...\) 的寫法，所以此處我們使用的
 
